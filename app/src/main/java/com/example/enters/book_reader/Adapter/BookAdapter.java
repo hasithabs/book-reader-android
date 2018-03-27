@@ -35,7 +35,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     @NonNull
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View bookView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_favorite, null);
+        View bookView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_layout, null);
         BookViewHolder bookViewHolder = new BookViewHolder(bookView);
         return bookViewHolder;
     }
@@ -53,8 +53,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
         public BookViewHolder(View bookItemView) {
             super(bookItemView);
-            txtBookTitle = bookItemView.findViewById(R.id.bookTitle);
-            txtBookAuthor = bookItemView.findViewById(R.id.bookAuthor);
+            txtBookTitle = bookItemView.findViewById(R.id.textViewTitle);
+            txtBookAuthor = bookItemView.findViewById(R.id.textViewShortDesc);
         }
     }
 }
