@@ -1,10 +1,14 @@
 package com.example.enters.book_reader;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -16,7 +20,7 @@ import com.example.enters.book_reader.book.Book;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchBookActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class SearchBookActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
 
     DatabaseHelper bookDB;
     RecyclerView recyclerView;
@@ -76,9 +80,32 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
         return true;
     }
 
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(this, ReaderActivity.class);
+        intent.putExtra("bookId", "06FgsmilUXAC");
+        SearchBookActivity.this.startActivity(intent);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbarmenu,menu);
+        return true;
+    }
 
-
-
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id==R.id.search_bID){
+            Intent intent = new Intent(this, SearchBookActivity.class);
+            SearchBookActivity.this.startActivity(intent);
+            return true;
+        }
+        if(id==R.id.favorite_bID){
+            Intent intent = new Intent(this, FavoriteActivity.class);
+            SearchBookActivity.this.startActivity(intent);
+            return true;
+        }
+        return true;
+    }
 }
