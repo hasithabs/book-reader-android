@@ -31,4 +31,5 @@ dependencies {
     compile 'com.github.barteksc:android-pdf-viewer:3.0.0-beta.5'
     compile 'com.android.support:cardview-v7:26.0.0-beta2'
     compile 'com.android.support:recyclerview-v7:26.0.0-beta2'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
 }
