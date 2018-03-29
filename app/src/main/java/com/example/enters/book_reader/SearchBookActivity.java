@@ -106,6 +106,12 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
             SearchBookActivity.this.startActivity(intent);
             return true;
         }
+
+        if(id==R.id.menu_bID){
+            Intent intent = new Intent(this, HomeActivity.class);
+            SearchBookActivity.this.startActivity(intent);
+            return true;
+        }
         return true;
     }
 }
