@@ -57,7 +57,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             txtBookAuthor = bookItemView.findViewById(R.id.textViewShortDesc);
         }
     }
-    
+
+    public void setFilter(ArrayList<Book> searchList){
+        bookList = new ArrayList<>();
+        bookList.addAll(searchList);
+        notifyDataSetChanged();
+    }
 
     @Override
     public long getItemId(int position) {

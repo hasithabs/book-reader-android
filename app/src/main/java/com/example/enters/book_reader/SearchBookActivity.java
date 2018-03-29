@@ -29,7 +29,6 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_book);
         setTitle("Search Books");
-
         bookDB = new DatabaseHelper(this);
 
         bookList = new ArrayList<>();
@@ -55,8 +54,8 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(bookAdapter);
 
-        //searchView = findViewById(R.id.search_bar);
-        //searchView.findViewById();
+        searchView = findViewById(R.id.search_bar);
+        searchView.setOnQueryTextListener(this);
     }
 
     @Override
@@ -66,7 +65,6 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
 
     @Override
     public boolean onQueryTextChange(String text) {
-        text = text.toLowerCase();
         ArrayList<Book> searchBookList = new ArrayList<>();
         for (Book book : bookList){
             String bookTitle = book.getTitle().toLowerCase();
@@ -74,12 +72,7 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
                 searchBookList.add(book);
             }
         }
-
-        bookAdapter = new BookAdapter(this, bookList);
-        recyclerView = findViewById(R.id.SearchRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(bookAdapter);
+        bookAdapter.setFilter(searchBookList);
         return true;
     }
 
