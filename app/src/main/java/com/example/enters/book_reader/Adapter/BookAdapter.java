@@ -57,4 +57,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             txtBookAuthor = bookItemView.findViewById(R.id.textViewShortDesc);
         }
     }
+    
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
 }

@@ -167,4 +167,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = QueryData("SELECT * FROM " + TABLE_NAME + " WHERE type = 1");
         return data;
     }
+
+    public Cursor getAllBooks() {
+        Cursor data = QueryData("SELECT * FROM " + TABLE_NAME );
+        return data;
+    }
 }
