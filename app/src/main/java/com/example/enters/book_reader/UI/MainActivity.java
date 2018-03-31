@@ -1,9 +1,11 @@
-package com.example.enters.book_reader;
+package com.example.enters.book_reader.UI;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.enters.book_reader.R;
 
 public class MainActivity extends AppCompatActivity {
 

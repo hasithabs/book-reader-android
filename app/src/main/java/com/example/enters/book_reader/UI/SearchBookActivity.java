@@ -1,4 +1,4 @@
-package com.example.enters.book_reader;
+package com.example.enters.book_reader.UI;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,16 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.enters.book_reader.Adapter.BookAdapter;
+import com.example.enters.book_reader.Helper.DatabaseHelper;
+import com.example.enters.book_reader.R;
 import com.example.enters.book_reader.book.Book;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchBookActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
 
