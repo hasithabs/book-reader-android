@@ -36,7 +36,7 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.activity_favorite);
         setTitle("Favorite Books");
 
-        bookDB = new DatabaseHelper(this);
+        bookDB = DatabaseHelper.getDbInstance(this);
         populateListView();
     }
 
@@ -60,18 +60,12 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
 
                 bookAdapter = new BookAdapter(this, bookList);
 
-
-        recyclerView = findViewById(R.id.FavRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(bookAdapter);
-    }
-
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(this, ReaderActivity.class);
-        intent.putExtra("bookId", "06FgsmilUXAC");
-        FavoriteActivity.this.startActivity(intent);
+                recyclerView = findViewById(R.id.FavRecyclerView);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                recyclerView.setAdapter(bookAdapter);
+            }
+        }
     }
 
     @Override
@@ -91,20 +85,16 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id==R.id.search_bID){
+        if (id == R.id.search_bID) {
             Intent intent = new Intent(this, SearchBookActivity.class);
             FavoriteActivity.this.startActivity(intent);
             return true;
         }
-        if(id==R.id.favorite_bID){
+        if (id == R.id.favorite_bID) {
             Intent intent = new Intent(this, FavoriteActivity.class);
             FavoriteActivity.this.startActivity(intent);
             return true;
         }
         return true;
-    }
-
-    public void populateListView() {
-        Cursor cursor = bookDB.getAllFavoriteBooks();
     }
 }

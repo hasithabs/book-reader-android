@@ -22,6 +22,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(homeIntend);
                 finish();
             }
-        },SPLASH_TIME_OUT);
+        }, SPLASH_TIME_OUT);
     }
 }

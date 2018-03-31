@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
 
+    private static final String TAG = BookAdapter.class.getName();
+
     static ArrayList<Book> bookList = new ArrayList<>();
     static Context bookContext;
     DatabaseHelper bookDB;
@@ -38,7 +42,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public BookAdapter(Context context, ArrayList<Book> arrayList) {
         this.bookContext = context;
         this.bookList = arrayList;
-        bookDB = new DatabaseHelper(context);
+        bookDB = DatabaseHelper.getDbInstance(context);
     }
 
     @Override
@@ -127,8 +131,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                 public void onClick(View v) {
                     System.out.println(currentItem.getId());
                     if (currentItem.getType() == 0) {
+                        Log.d(TAG, "Changing book type to 1");
                         addFavoriteBook(currentItem);
                     } else {
+                        Log.d(TAG, "Changing book type to 0");
                         removeFavoriteBook(currentItem);
                     }
                 }
@@ -157,6 +163,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     private void deleteBookEvent(Book _book) {
         int _index = bookList.indexOf(_book);
         bookList.remove(_index);
+        bookDB.removeBook(_book.getId());
+        Cursor cc = bookDB.getAllBooks();
+        System.out.println("--------------------------------");
+        System.out.println("--------------------------------");
+        System.out.println(cc.getCount());
+        System.out.println("--------------------------------");
+        System.out.println("--------------------------------");
         notifyItemRemoved(_index);
         notifyItemRangeChanged(_index, bookList.size());
     }

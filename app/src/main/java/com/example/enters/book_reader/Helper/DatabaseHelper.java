@@ -16,6 +16,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = DatabaseHelper.class.getName();
 
+    private static DatabaseHelper dbInstance;
+
     private static String DB_NAME = "book_reader.sqlite";
     private static String DB_PATH = "";
     private static String TABLE_NAME = "books";
@@ -45,9 +47,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.bookDBContext = context;
     }
 
+    public static DatabaseHelper getDbInstance(Context context) {
+        if (dbInstance == null) {
+            dbInstance = new DatabaseHelper(context.getApplicationContext());
+        }
+        return dbInstance;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TABLE_CREATE);
     }
 
     @Override
@@ -115,10 +123,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void createTable() {
-        if (checkDatabase()) {
-            Log.d(TAG, "Create book database");
+        if (checkDatabase() && checkTableExist()) {
+            Log.d(TAG, "Create book table");
             bookDatabase.execSQL(TABLE_CREATE);
+        } else {
+            Log.d(TAG, "Book table exists");
         }
+    }
+
+    public boolean checkTableExist() {
+        Cursor cursor = QueryData("SELECT name FROM sqlite_master WHERE type='table' AND name='" + TABLE_NAME + "'");
+        cursor.moveToFirst();
+        int count = cursor.getCount();
+        cursor.close();
+        return count == 0;
     }
 
     public void clearTable() {
@@ -150,23 +168,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertData() {
-        clearTable();
-        insertBook(1, "Sample data", "Authorrr", "broke_img.jpg", "aassdd.pdf", 1);
-        insertBook(2, "Book text 3", "Authorrsdg sdg s", "broke_img.jpg", "aassdd.pdf", 1);
-        insertBook(3, "Book tesdg s", "Authsdg  gsdg sdg s", "broke_img.jpg", "aassdd.pdf", 0);
+        if (getDataCount() == 3) {
+            Log.d(TAG, "Data exist in book table");
+        } else {
+            Log.d(TAG, "Adding data to book table");
+            clearTable();
+            insertBook(1, "Sample data", "Authorrr", "broke_img.jpg", "aassdd.pdf", 1);
+            insertBook(2, "Book text 3", "Authorrsdg sdg s", "broke_img.jpg", "aassdd.pdf", 1);
+            insertBook(3, "Book tesdg s", "Authsdg  gsdg sdg s", "broke_img.jpg", "aassdd.pdf", 0);
+        }
     }
 
     public Cursor getAllFavoriteBooks() {
         Cursor data = QueryData("SELECT * FROM " + TABLE_NAME + " WHERE type = 1");
+        Log.d(TAG, "Get all favorite books");
         return data;
     }
 
     public Cursor getAllBooks() {
         Cursor data = QueryData("SELECT * FROM " + TABLE_NAME );
+        Log.d(TAG, "Get all books");
         return data;
     }
 
     public void changeBookType(int id, int type) {
-        QueryData("UPDATE " + TABLE_NAME + " SET type = " + type + " WHERE id = " + id);
+        QueryData("UPDATE " + TABLE_NAME + " SET type = " + type + " WHERE id = " + id).moveToFirst();
+        Log.d(TAG, "Change book type in table");
+    }
+
+    public boolean removeBook(int id) {
+        Log.d(TAG, "Removing item from table");
+        return bookDatabase.delete(TABLE_NAME, "id = " + id, null) > 0;
     }
 }

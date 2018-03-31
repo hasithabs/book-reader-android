@@ -9,7 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.enters.book_reader.Adapter.BookAdapter;
 import com.example.enters.book_reader.Helper.DatabaseHelper;
@@ -31,7 +33,7 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_book);
         setTitle("Search Books");
-        bookDB = new DatabaseHelper(this);
+        bookDB = DatabaseHelper.getDbInstance(this);
 
         bookList = new ArrayList<>();
 
@@ -45,7 +47,8 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
                         Books.getString(1),
                         Books.getString(2),
                         Books.getString(3),
-                        Books.getString(4)));
+                        Books.getString(4),
+                        Books.getInt(5)));
             }
         }
 
