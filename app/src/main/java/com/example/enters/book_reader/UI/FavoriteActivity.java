@@ -28,7 +28,7 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
     RecyclerView recyclerView;
     BookAdapter bookAdapter;
 
-    ArrayList<Book> bookList;
+    ArrayList<Book> favoriteBooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,30 +41,17 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
     }
 
     public void populateListView() {
-        bookList = new ArrayList<>();
+        favoriteBooks = bookDB.getAllFavoriteBooks();
 
-        Cursor favoriteBooks = bookDB.getAllFavoriteBooks();
-        System.out.println(favoriteBooks.getCount());
-        System.out.println("--------------------------");
-
-        if (favoriteBooks.getCount() == 0) {
+        if (favoriteBooks.size() == 0) {
             Toast.makeText(FavoriteActivity.this, "You don't have favorite books", Toast.LENGTH_LONG);
         } else {
-            while (favoriteBooks.moveToNext()) {
-                bookList.add(new Book(favoriteBooks.getInt(0),
-                        favoriteBooks.getString(1),
-                        favoriteBooks.getString(2),
-                        favoriteBooks.getString(3),
-                        favoriteBooks.getString(4),
-                        favoriteBooks.getInt(5)));
+            bookAdapter = new BookAdapter(this, favoriteBooks);
 
-                bookAdapter = new BookAdapter(this, bookList);
-
-                recyclerView = findViewById(R.id.FavRecyclerView);
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                recyclerView.setAdapter(bookAdapter);
-            }
+            recyclerView = findViewById(R.id.FavRecyclerView);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(bookAdapter);
         }
     }
 
@@ -77,8 +64,8 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this, ReaderActivity.class);
-        intent.putExtra("bookId", bookList.get(position).getId());
-        intent.putExtra("bookPath", bookList.get(position).getFilePath());
+        intent.putExtra("bookId", favoriteBooks.get(position).getId());
+        intent.putExtra("bookPath", favoriteBooks.get(position).getFilePath());
         FavoriteActivity.this.startActivity(intent);
     }
 

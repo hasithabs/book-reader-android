@@ -8,6 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
 
+import com.example.enters.book_reader.book.Book;
+
+import java.util.ArrayList;
+
 /**
  * Created by EnTeRs on 3/25/2018.
  */
@@ -21,6 +25,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_NAME = "book_reader.sqlite";
     private static String DB_PATH = "";
     private static String TABLE_NAME = "books";
+    private static int BOOK_COLUMN_ID = 0;
+    private static int BOOK_COLUMN_TITLE = 1;
+    private static int BOOK_COLUMN_AUTHOR = 2;
+    private static int BOOK_COLUMN_IMGPATH = 3;
+    private static int BOOK_COLUMN_FILEPATH = 4;
+    private static int BOOK_COLUMN_TYPE = 5;
     private static String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( " +
             "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
             "`title` TEXT NOT NULL, " +
@@ -35,11 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, 1);
-//        if (Build.VERSION.SDK_INT >= 15) {
-//            DB_PATH = context.getApplicationInfo().dataDir = "/databases/";
-//        } else {
-            DB_PATH = Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/";
-//        }
+        DB_PATH = Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/";
         getWritableDatabase();
         openDatabase();
         createTable();
@@ -70,22 +76,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         bookDatabase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
     }
 
-//    public void checkAndCopyDatabase() {
-//        boolean dbExist = checkDatabase();
-//        if (dbExist) {
-//            Log.d(TAG, "Database is already exist");
-//        } else {
-//            this.getReadableDatabase();
-//        }
-//
-//        try {
-//            copyDatabase();
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//            Log.e(TAG, "Error copy database");
-//        }
-//    }
-
     public boolean checkDatabase() {
         SQLiteDatabase checkDB = null;
         String myPath = DB_PATH + DB_NAME;
@@ -95,20 +85,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return checkDB != null ? true : false;
     }
-//
-//    public void copyDatabase() throws IOException {
-//        InputStream dbInput = bookDBContext.getAssets().open(DB_NAME);
-//        String saveFileName = DB_PATH + DB_NAME;
-//        OutputStream dbOutput = new FileOutputStream(saveFileName);
-//        byte[] buffer = new byte[1024];
-//        int dataLen;
-//        while ((dataLen = dbInput.read(buffer)) > 0) {
-//            dbOutput.write(buffer, 0, dataLen);
-//        }
-//        dbOutput.flush();
-//        dbOutput.close();
-//        dbInput.close();
-//    }
 
     @Override
     public synchronized void close() {
@@ -119,6 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor QueryData(String query) {
+        openDatabase();
         return bookDatabase.rawQuery(query, null);
     }
 
@@ -179,10 +156,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor getAllFavoriteBooks() {
+    public ArrayList<Book> getAllFavoriteBooks() {
         Cursor data = QueryData("SELECT * FROM " + TABLE_NAME + " WHERE type = 1");
-        Log.d(TAG, "Get all favorite books");
-        return data;
+        Log.d(TAG, "Getting all favorite books");
+
+        ArrayList<Book> bookList = new ArrayList<>();
+
+        while (data.moveToNext()) {
+            bookList.add(new Book(data.getInt(BOOK_COLUMN_ID),
+                    data.getString(BOOK_COLUMN_TITLE),
+                    data.getString(BOOK_COLUMN_AUTHOR),
+                    data.getString(BOOK_COLUMN_IMGPATH),
+                    data.getString(BOOK_COLUMN_FILEPATH),
+                    data.getInt(BOOK_COLUMN_TYPE)
+            ));
+        }
+        close();
+
+        return bookList;
     }
 
     public Cursor getAllBooks() {

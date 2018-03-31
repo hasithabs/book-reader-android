@@ -164,12 +164,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         int _index = bookList.indexOf(_book);
         bookList.remove(_index);
         bookDB.removeBook(_book.getId());
-        Cursor cc = bookDB.getAllBooks();
-        System.out.println("--------------------------------");
-        System.out.println("--------------------------------");
-        System.out.println(cc.getCount());
-        System.out.println("--------------------------------");
-        System.out.println("--------------------------------");
         notifyItemRemoved(_index);
         notifyItemRangeChanged(_index, bookList.size());
     }
