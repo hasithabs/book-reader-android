@@ -1,5 +1,7 @@
 package com.example.enters.book_reader.UI;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
@@ -10,6 +12,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.example.enters.book_reader.Helper.DatabaseHelper;
 import com.example.enters.book_reader.R;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
@@ -31,21 +34,34 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
 
     private static final String TAG = "ReaderActivity";
     public static final String SAMPLE_FILE = "aassdd.pdf";
-    File sdDir = Environment.getExternalStorageDirectory();
+
     PDFView pdfView;
-    Integer pageNumber = 0;
+    int bookId;
     String pdfFileName;
+    int pageNumber = 0;
+
+    ProgressDialog progress;
+    DatabaseHelper bookDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
 
-        int bookId = getIntent().getExtras().getInt("bookId");
-        String bookPath = getIntent().getExtras().getString("bookPath");
+        progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading book...");
+        progress.setCancelable(false);
+        progress.show();
+
+        bookDB = DatabaseHelper.getDbInstance(this);
+
+        bookId = getIntent().getExtras().getInt("bookId");
+        pdfFileName = getIntent().getExtras().getString("bookPath");
+        pageNumber = getIntent().getExtras().getInt("currentPage") - 1;
 
         pdfView = findViewById(R.id.pdfView);
-        displayFromAsset(bookPath);
+        displayFromAsset(pdfFileName);
     }
 
 
@@ -54,6 +70,7 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
 
         pdfView.fromAsset(SAMPLE_FILE)
                 .defaultPage(pageNumber)
+                .onLoad(this)
                 .onPageChange(this)
                 .enableAnnotationRendering(true)
                 .onLoad(this)
@@ -64,10 +81,13 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
                 .load();
     }
 
+
+
     @Override
     public void onPageChanged(int page, int pageCount) {
         pageNumber = page;
         setTitle(String.format("%s %s / %s", pdfFileName, page + 1, pageCount));
+        bookDB.changeBookPage(bookId, page + 1);
     }
 
     @Override
@@ -83,6 +103,7 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
         Log.e(TAG, "modDate = " + meta.getModDate());
 
         printBookmarksTree(pdfView.getTableOfContents(), "-");
+        progress.dismiss();
     }
 
     public void printBookmarksTree(List<PdfDocument.Bookmark> tree, String sep) {
@@ -101,5 +122,12 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
         Log.e(TAG, "Cannot load page " + page);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("bookId", bookId);
+        returnIntent.putExtra("currentPage", pageNumber + 1);
+        setResult(RESULT_OK, returnIntent);
+        finish();
+    }
 }

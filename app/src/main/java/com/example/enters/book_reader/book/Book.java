@@ -11,14 +11,19 @@ public class Book {
     String imgPath;
     String filePath;
     int type;
+    int pageCount;
+    int currentPage;
 
-    public Book(int id, String title, String author, String imgPath, String filePath, int type) {
+    public Book(int id, String title, String author, String imgPath, String filePath, int type,
+                int pageCount, int currentPage) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.imgPath = imgPath;
         this.filePath = filePath;
         this.type = type;
+        this.pageCount = pageCount;
+        this.currentPage = currentPage;
     }
 
     public Book(int id, String title, String author, String imgPath, String filePath) {
@@ -76,5 +81,21 @@ public class Book {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 }

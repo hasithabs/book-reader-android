@@ -48,7 +48,9 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
                         Books.getString(2),
                         Books.getString(3),
                         Books.getString(4),
-                        Books.getInt(5)));
+                        Books.getInt(5),
+                        Books.getInt(6),
+                        Books.getInt(7)));
             }
         }
 
@@ -83,9 +85,6 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(this, ReaderActivity.class);
-        intent.putExtra("bookId", "06FgsmilUXAC");
-        SearchBookActivity.this.startActivity(intent);
     }
 
     @Override

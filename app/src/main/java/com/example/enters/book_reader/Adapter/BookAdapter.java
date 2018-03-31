@@ -1,5 +1,6 @@
 package com.example.enters.book_reader.Adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -63,6 +64,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         Book book = bookList.get(position);
         holder.txtBookTitle.setText(book.getTitle());
         holder.txtBookAuthor.setText(book.getAuthor());
+        holder.txtBookPages.setText(book.getCurrentPage() + " / " + book.getPageCount());
         holder.imgBookCover.setImageBitmap(ImageHelper.getBitmapFromAsset(bookContext, book.getImgPath()));
 
         if (book.getType() == 1) {
@@ -77,6 +79,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public class BookViewHolder extends RecyclerView.ViewHolder {
         public TextView txtBookTitle;
         public TextView txtBookAuthor;
+        public TextView txtBookPages;
         public ImageView imgBookCover;
         public ImageView favIcon;
         public Book currentItem;
@@ -84,7 +87,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         public BookViewHolder(final View bookItemView) {
             super(bookItemView);
             txtBookTitle = bookItemView.findViewById(R.id.textViewTitle);
-            txtBookAuthor = bookItemView.findViewById(R.id.textViewShortDesc);
+            txtBookAuthor = bookItemView.findViewById(R.id.textViewAuthor);
+            txtBookPages = bookItemView.findViewById(R.id.textViewPages);
             imgBookCover = bookItemView.findViewById(R.id.imageView);
             favIcon = bookItemView.findViewById(R.id.FavIcon);
 
@@ -157,7 +161,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         Intent intent = new Intent(bookContext, ReaderActivity.class);
         intent.putExtra("bookId", _currentItem.getId());
         intent.putExtra("bookPath", _currentItem.getFilePath());
-        bookContext.startActivity(intent);
+        intent.putExtra("currentPage", _currentItem.getCurrentPage());
+        ((Activity) bookContext).startActivityForResult(intent, 1);
+//        bookContext.startActivity(intent);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult");
     }
 
     private void deleteBookEvent(Book _book) {
@@ -172,7 +182,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         int _index = bookList.indexOf(_book);
         bookList.get(_index).setType(0);
         bookDB.changeBookType(_book.getId(), 0);
-        notifyItemRemoved(_index);
         notifyItemRangeChanged(_index, bookList.size());
     }
 

@@ -31,13 +31,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static int BOOK_COLUMN_IMGPATH = 3;
     private static int BOOK_COLUMN_FILEPATH = 4;
     private static int BOOK_COLUMN_TYPE = 5;
+    private static int BOOK_COLUMN_PAGECOUNT = 6;
+    private static int BOOK_COLUMN_CURRENTPAGE = 7;
     private static String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( " +
             "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
             "`title` TEXT NOT NULL, " +
             "`author` TEXT NOT NULL, " +
             "`imgPath` TEXT NOT NULL, " +
             "`filePath` TEXT NOT NULL, " +
-            "`type` INTEGER " +
+            "`type` INTEGER, " +
+            "`pageCount` INTEGER, " +
+            "`currentPage` INTEGER " +
             ");";
 
     private SQLiteDatabase bookDatabase;
@@ -121,7 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void dropTable() {
-        bookDatabase.execSQL("DROP TABLE IF EXISTS" + TABLE_NAME, null);
+        bookDatabase.execSQL("DROP TABLE IF EXISTS '" + TABLE_NAME + "'");
     }
 
     public int getDataCount() {
@@ -132,7 +136,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public boolean insertBook (int _id, String _title, String _author, String _imgPath, String _filePath, int _type) {
+    public boolean insertBook (int _id, String _title, String _author, String _imgPath,
+                               String _filePath, int _type, int _PageCount, int _currentPage) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("id", _id);
         contentValues.put("title", _title);
@@ -140,6 +145,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("imgPath", _imgPath);
         contentValues.put("filePath", _filePath);
         contentValues.put("type", _type);
+        contentValues.put("pageCount", _PageCount);
+        contentValues.put("currentPage", _currentPage);
         bookDatabase.insert(TABLE_NAME, null, contentValues);
         return true;
     }
@@ -150,9 +157,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             Log.d(TAG, "Adding data to book table");
             clearTable();
-            insertBook(1, "Sample data", "Authorrr", "broke_img.jpg", "aassdd.pdf", 1);
-            insertBook(2, "Book text 3", "Authorrsdg sdg s", "broke_img.jpg", "aassdd.pdf", 1);
-            insertBook(3, "Book tesdg s", "Authsdg  gsdg sdg s", "broke_img.jpg", "aassdd.pdf", 0);
+            insertBook(1, "Sample data", "Authorrr",
+                    "broke_img.jpg", "aassdd.pdf", 1, 20, 0);
+            insertBook(2, "Book text 3", "Authorrsdg sdg s",
+                    "broke_img.jpg", "aassdd.pdf", 1, 54, 10);
+            insertBook(3, "Book tesdg s", "Authsdg  gsdg sdg s",
+                    "broke_img.jpg", "aassdd.pdf", 0, 61, 49);
         }
     }
 
@@ -168,7 +178,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     data.getString(BOOK_COLUMN_AUTHOR),
                     data.getString(BOOK_COLUMN_IMGPATH),
                     data.getString(BOOK_COLUMN_FILEPATH),
-                    data.getInt(BOOK_COLUMN_TYPE)
+                    data.getInt(BOOK_COLUMN_TYPE),
+                    data.getInt(BOOK_COLUMN_PAGECOUNT),
+                    data.getInt(BOOK_COLUMN_CURRENTPAGE)
             ));
         }
         close();
@@ -183,12 +195,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void changeBookType(int id, int type) {
+        Log.d(TAG, "Changing book type in table");
         QueryData("UPDATE " + TABLE_NAME + " SET type = " + type + " WHERE id = " + id).moveToFirst();
-        Log.d(TAG, "Change book type in table");
+        Log.d(TAG, "Changed book type in table");
     }
 
     public boolean removeBook(int id) {
         Log.d(TAG, "Removing item from table");
         return bookDatabase.delete(TABLE_NAME, "id = " + id, null) > 0;
+    }
+
+    public void changeBookPage(int id, int currentPage) {
+        Log.d(TAG, "Changing current page in table book");
+        QueryData("UPDATE " + TABLE_NAME + " SET currentPage = " + currentPage + " WHERE id = " + id).moveToFirst();
     }
 }

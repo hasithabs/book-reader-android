@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,10 +64,38 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, ReaderActivity.class);
-        intent.putExtra("bookId", favoriteBooks.get(position).getId());
-        intent.putExtra("bookPath", favoriteBooks.get(position).getFilePath());
-        FavoriteActivity.this.startActivity(intent);
+
+    }
+
+//    @Override
+//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        System.out.println("--------------onItemClick----------------");
+//        System.out.println("------------------------------");
+//        Intent intent = new Intent(FavoriteActivity.this, ReaderActivity.class);
+//        intent.putExtra("bookId", favoriteBooks.get(position).getId());
+//        intent.putExtra("bookPath", favoriteBooks.get(position).getFilePath());
+//        intent.putExtra("currentPage", favoriteBooks.get(position).getCurrentPage());
+//        this.startActivityForResult(intent, 1);
+//    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        bookAdapter.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                int bookId = data.getExtras().getInt("bookId");
+                System.out.println("------------------------------");
+                for(Book b : favoriteBooks){
+                    if(b.getId() == bookId) {
+                        int _index = favoriteBooks.indexOf(b);
+                        favoriteBooks.get(_index).setCurrentPage(data.getExtras().getInt("currentPage"));
+                        Log.d(TAG, "Setting current page to book");
+                        System.out.println(favoriteBooks.get(_index).getCurrentPage());
+                        bookAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
     }
 
     @Override
