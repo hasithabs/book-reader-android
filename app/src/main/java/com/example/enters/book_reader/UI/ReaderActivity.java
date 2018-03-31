@@ -1,4 +1,4 @@
-package com.example.enters.book_reader;
+package com.example.enters.book_reader.UI;
 
 import android.graphics.Color;
 import android.net.Uri;
@@ -10,6 +10,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.example.enters.book_reader.R;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
@@ -30,11 +31,8 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
 
     private static final String TAG = "ReaderActivity";
     public static final String SAMPLE_FILE = "aassdd.pdf";
-    File sdDir = Environment.getExternalStorageDirectory();
     PDFView pdfView;
-
     Integer pageNumber = 0;
-
     String pdfFileName;
 
     @Override
@@ -42,24 +40,13 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
 
-        String idStr = getIntent().getExtras().getString("bookId");
-        Log.d(TAG, idStr);
+        int bookId = getIntent().getExtras().getInt("bookId");
+        String bookPath = getIntent().getExtras().getString("bookPath");
 
         pdfView = findViewById(R.id.pdfView);
-        //pdfView.fromAsset("aassdd.pdf").load();
-        //afterViews();
-        displayFromAsset(SAMPLE_FILE);
+        displayFromAsset(bookPath);
     }
 
-
-
-//
-//    @AfterViews
-//    void afterViews() {
-//        pdfView.setBackgroundColor(Color.LTGRAY);
-//        displayFromAsset(SAMPLE_FILE);
-//        setTitle(pdfFileName);
-//    }
 
     private void displayFromAsset(String assetFileName) {
         pdfFileName = assetFileName;

@@ -1,14 +1,26 @@
 package com.example.enters.book_reader.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.enters.book_reader.Helper.DatabaseHelper;
+import com.example.enters.book_reader.Helper.ImageHelper;
 import com.example.enters.book_reader.R;
+import com.example.enters.book_reader.UI.FavoriteActivity;
+import com.example.enters.book_reader.UI.ReaderActivity;
 import com.example.enters.book_reader.book.Book;
 
 import java.util.ArrayList;
@@ -19,12 +31,14 @@ import java.util.ArrayList;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
 
-    ArrayList<Book> bookList = new ArrayList<>();
-    Context bookContext;
+    static ArrayList<Book> bookList = new ArrayList<>();
+    static Context bookContext;
+    DatabaseHelper bookDB;
 
     public BookAdapter(Context context, ArrayList<Book> arrayList) {
         this.bookContext = context;
         this.bookList = arrayList;
+        bookDB = new DatabaseHelper(context);
     }
 
     @Override
@@ -45,16 +59,109 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         Book book = bookList.get(position);
         holder.txtBookTitle.setText(book.getTitle());
         holder.txtBookAuthor.setText(book.getAuthor());
+        holder.imgBookCover.setImageBitmap(ImageHelper.getBitmapFromAsset(bookContext, book.getImgPath()));
+
+        if (book.getType() == 1) {
+            holder.favIcon.setColorFilter(bookContext.getResources().getColor(R.color.colorActive), PorterDuff.Mode.SRC_ATOP);
+        } else {
+            holder.favIcon.setColorFilter(bookContext.getResources().getColor(R.color.colorGrayLight), PorterDuff.Mode.SRC_ATOP);
+        }
+
+        holder.currentItem = book;
     }
 
-    public static class BookViewHolder extends RecyclerView.ViewHolder {
+    public class BookViewHolder extends RecyclerView.ViewHolder {
         public TextView txtBookTitle;
         public TextView txtBookAuthor;
+        public ImageView imgBookCover;
+        public ImageView favIcon;
+        public Book currentItem;
 
-        public BookViewHolder(View bookItemView) {
+        public BookViewHolder(final View bookItemView) {
             super(bookItemView);
             txtBookTitle = bookItemView.findViewById(R.id.textViewTitle);
             txtBookAuthor = bookItemView.findViewById(R.id.textViewShortDesc);
+            imgBookCover = bookItemView.findViewById(R.id.imageView);
+            favIcon = bookItemView.findViewById(R.id.FavIcon);
+
+
+            bookItemView.setClickable(true);
+            bookItemView.setFocusable(true);
+
+            bookItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openBookEvent(currentItem);
+                }
+            });
+
+            bookItemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    final CharSequence[] items = {"Open book", "Delete book"};
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(bookContext);
+
+                    builder.setTitle("Select The Action")
+                    .setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+                            dialog.dismiss();
+                            switch (item) {
+                                case 0:
+                                    openBookEvent(currentItem);
+                                    break;
+                                case 1:
+                                    deleteBookEvent(currentItem);
+                                    break;
+                            }
+                        }
+                    });
+                    builder.show();
+                    return true;
+                }
+            });
+
+            favIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println(currentItem.getId());
+                    if (currentItem.getType() == 0) {
+                        addFavoriteBook(currentItem);
+                    } else {
+                        removeFavoriteBook(currentItem);
+                    }
+                }
+            });
         }
+    }
+
+    private static void openBookEvent(Book _currentItem) {
+        Intent intent = new Intent(bookContext, ReaderActivity.class);
+        intent.putExtra("bookId", _currentItem.getId());
+        intent.putExtra("bookPath", _currentItem.getFilePath());
+        bookContext.startActivity(intent);
+    }
+
+    private void deleteBookEvent(Book _book) {
+        int _index = bookList.indexOf(_book);
+        bookList.remove(_index);
+        notifyItemRemoved(_index);
+        notifyItemRangeChanged(_index, bookList.size());
+    }
+
+    private void removeFavoriteBook(Book _book) {
+        int _index = bookList.indexOf(_book);
+        bookList.get(_index).setType(0);
+        bookDB.changeBookType(_book.getId(), 0);
+        notifyItemRemoved(_index);
+        notifyItemRangeChanged(_index, bookList.size());
+    }
+
+    private void addFavoriteBook(Book _book) {
+        int _index = bookList.indexOf(_book);
+        bookList.get(_index).setType(1);
+        bookDB.changeBookType(_book.getId(), 1);
+        notifyItemRangeChanged(_index, bookList.size());
     }
 }

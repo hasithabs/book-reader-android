@@ -1,4 +1,4 @@
-package com.example.enters.book_reader;
+package com.example.enters.book_reader.UI;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -7,16 +7,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.example.enters.book_reader.Adapter.BookAdapter;
+import com.example.enters.book_reader.Helper.DatabaseHelper;
+import com.example.enters.book_reader.R;
 import com.example.enters.book_reader.book.Book;
 
 import java.util.ArrayList;
 
-public class FavoriteActivity extends AppCompatActivity implements View.OnClickListener {
+public class FavoriteActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private static final String TAG = "FavoriteActivity";
 
@@ -34,7 +35,10 @@ public class FavoriteActivity extends AppCompatActivity implements View.OnClickL
         setTitle("Favorite Books");
 
         bookDB = new DatabaseHelper(this);
+        populateListView();
+    }
 
+    public void populateListView() {
         bookList = new ArrayList<>();
 
         Cursor favoriteBooks = bookDB.getAllFavoriteBooks();
@@ -49,27 +53,24 @@ public class FavoriteActivity extends AppCompatActivity implements View.OnClickL
                         favoriteBooks.getString(1),
                         favoriteBooks.getString(2),
                         favoriteBooks.getString(3),
-                        favoriteBooks.getString(4)));
+                        favoriteBooks.getString(4),
+                        favoriteBooks.getInt(5)));
+
+                bookAdapter = new BookAdapter(this, bookList);
+
+                recyclerView = findViewById(R.id.FavRecyclerView);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                recyclerView.setAdapter(bookAdapter);
             }
         }
-
-        bookAdapter = new BookAdapter(this, bookList);
-
-
-        recyclerView = findViewById(R.id.FavRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(bookAdapter);
     }
 
     @Override
-    public void onClick(View v) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this, ReaderActivity.class);
-        intent.putExtra("bookId", "06FgsmilUXAC");
+        intent.putExtra("bookId", bookList.get(position).getId());
+        intent.putExtra("bookPath", bookList.get(position).getFilePath());
         FavoriteActivity.this.startActivity(intent);
-    }
-
-    public void populateListView() {
-        Cursor cursor = bookDB.getAllFavoriteBooks();
     }
 }

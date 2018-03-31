@@ -1,19 +1,12 @@
-package com.example.enters.book_reader;
+package com.example.enters.book_reader.Helper;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Created by EnTeRs on 3/25/2018.
@@ -166,5 +159,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getAllFavoriteBooks() {
         Cursor data = QueryData("SELECT * FROM " + TABLE_NAME + " WHERE type = 1");
         return data;
+    }
+
+    public void changeBookType(int id, int type) {
+        QueryData("UPDATE " + TABLE_NAME + " SET type = " + type + " WHERE id = " + id);
     }
 }
