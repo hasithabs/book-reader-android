@@ -13,9 +13,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UI.FavoriteActivity" />
+        <activity
+            android:name=".UI.FavoriteActivity"
+            android:parentActivityName=".UI.HomeActivity">
+        </activity>
         <activity android:name=".UI.ReaderActivity" />
-        <activity android:name=".UI.SearchBookActivity" />
+        <activity
+            android:name=".UI.SearchBookActivity"
+            android:parentActivityName=".UI.HomeActivity">
+        </activity>
         <activity android:name=".UI.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

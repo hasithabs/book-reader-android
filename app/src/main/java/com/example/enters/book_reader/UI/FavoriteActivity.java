@@ -36,6 +36,7 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
         setTitle("Favorite Books");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bookDB = DatabaseHelper.getDbInstance(this);
         populateListView();
@@ -54,12 +55,6 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(bookAdapter);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbarmenu,menu);
-        return true;
     }
 
     @Override
@@ -98,19 +93,4 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.search_bID) {
-            Intent intent = new Intent(this, SearchBookActivity.class);
-            FavoriteActivity.this.startActivity(intent);
-            return true;
-        }
-        if (id == R.id.favorite_bID) {
-            Intent intent = new Intent(this, FavoriteActivity.class);
-            FavoriteActivity.this.startActivity(intent);
-            return true;
-        }
-        return true;
-    }
 }

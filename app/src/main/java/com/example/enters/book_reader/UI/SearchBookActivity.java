@@ -34,6 +34,7 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
         setContentView(R.layout.activity_search_book);
         setTitle("Search Books");
         bookDB = DatabaseHelper.getDbInstance(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bookList = new ArrayList<>();
 
@@ -85,33 +86,5 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
 
     @Override
     public void onClick(View view) {
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbarmenu,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id==R.id.search_bID){
-            Intent intent = new Intent(this, SearchBookActivity.class);
-            SearchBookActivity.this.startActivity(intent);
-            return true;
-        }
-        if(id==R.id.favorite_bID){
-            Intent intent = new Intent(this, FavoriteActivity.class);
-            SearchBookActivity.this.startActivity(intent);
-            return true;
-        }
-
-        if(id==R.id.menu_bID){
-            Intent intent = new Intent(this, HomeActivity.class);
-            SearchBookActivity.this.startActivity(intent);
-            return true;
-        }
-        return true;
     }
 }
