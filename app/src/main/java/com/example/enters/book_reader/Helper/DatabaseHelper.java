@@ -161,6 +161,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    public Cursor getAllBooks() {
+        Cursor data = QueryData("SELECT * FROM " + TABLE_NAME );
+        return data;
+    }
+
     public void changeBookType(int id, int type) {
         QueryData("UPDATE " + TABLE_NAME + " SET type = " + type + " WHERE id = " + id);
     }

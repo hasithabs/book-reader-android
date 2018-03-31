@@ -136,6 +136,17 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         }
     }
 
+    public void setFilter(ArrayList<Book> searchList){
+        bookList = new ArrayList<>();
+        bookList.addAll(searchList);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
     private static void openBookEvent(Book _currentItem) {
         Intent intent = new Intent(bookContext, ReaderActivity.class);
         intent.putExtra("bookId", _currentItem.getId());

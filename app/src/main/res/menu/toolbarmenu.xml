@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="Main Menu"
+        android:id="@+id/menu_bID"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item
+        android:title="Search Books"
+        android:id="@+id/search_bID"
+        android:orderInCategory="101"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:title="Favorite Books"
+        android:id="@+id/favorite_bID"
+        android:orderInCategory="102"
+        app:showAsAction="never"/>
+
+</menu>

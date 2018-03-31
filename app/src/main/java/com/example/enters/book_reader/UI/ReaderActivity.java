@@ -31,6 +31,7 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
 
     private static final String TAG = "ReaderActivity";
     public static final String SAMPLE_FILE = "aassdd.pdf";
+    File sdDir = Environment.getExternalStorageDirectory();
     PDFView pdfView;
     Integer pageNumber = 0;
     String pdfFileName;
