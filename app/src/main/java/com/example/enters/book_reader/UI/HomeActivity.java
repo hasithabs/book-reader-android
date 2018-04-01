@@ -63,12 +63,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case 1:
                 bookDB.createTable();
                 bookDB.insertData();
-                Toast.makeText(this, "Create table & add data", Toast.LENGTH_LONG);
+                Toast msg1 = Toast.makeText(this, "Create table & add data", Toast.LENGTH_LONG);
+                msg1.show();
                 return true;
 
             case 2:
                 bookDB.dropTable();
-                Toast.makeText(this, "Drop table", Toast.LENGTH_LONG);
+                Toast msg2 = Toast.makeText(this, "Drop table", Toast.LENGTH_LONG);
+                msg2.show();
                 return true;
 
             default:

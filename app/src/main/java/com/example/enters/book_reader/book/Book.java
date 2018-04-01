@@ -13,9 +13,10 @@ public class Book {
     int type;
     int pageCount;
     int currentPage;
+    String language;
 
     public Book(int id, String title, String author, String imgPath, String filePath, int type,
-                int pageCount, int currentPage) {
+                int pageCount, int currentPage, String language) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -24,15 +25,7 @@ public class Book {
         this.type = type;
         this.pageCount = pageCount;
         this.currentPage = currentPage;
-    }
-
-    public Book(int id, String title, String author, String imgPath, String filePath) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.imgPath = imgPath;
-        this.filePath = filePath;
-        this.type = 0;
+        this.language = language;
     }
 
     public int getId() {
@@ -97,5 +90,13 @@ public class Book {
 
     public void setCurrentPage(int currentPage) {
         this.currentPage = currentPage;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

@@ -2,15 +2,9 @@ package com.example.enters.book_reader.UI;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.example.enters.book_reader.Helper.DatabaseHelper;
 import com.example.enters.book_reader.R;
@@ -22,10 +16,6 @@ import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.shockwave.pdfium.PdfDocument;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 
@@ -33,7 +23,7 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
         OnPageErrorListener {
 
     private static final String TAG = "ReaderActivity";
-    public static final String SAMPLE_FILE = "aassdd.pdf";
+    public static final String SAMPLE_FILE = "cover/aassdd.pdf";
 
     PDFView pdfView;
     int bookId;
