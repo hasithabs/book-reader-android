@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -53,8 +54,10 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
 
             searchView = findViewById(R.id.search_bar);
             searchView.setOnQueryTextListener(this);
+            searchView.setOnClickListener(this);
         }
     }
+
 
     @Override
     public boolean onQueryTextSubmit(String s) {
@@ -76,6 +79,8 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
 
     @Override
     public void onClick(View view) {
+        InputMethodManager im = ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE));
+        im.showSoftInput(searchView, 0);
     }
 
     @Override
