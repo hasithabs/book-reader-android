@@ -36,34 +36,23 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
         bookDB = DatabaseHelper.getDbInstance(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        bookList = new ArrayList<>();
+        bookList = bookDB.getAllBooks();
 
-        Cursor Books = bookDB.getAllBooks();
-
-        if (Books.getCount() == 0) {
+        if (bookList.size() == 0) {
             //Toast.makeText(FavoriteActivity.this, "You don't have favorite books", Toast.LENGTH_LONG);
         } else {
-            while (Books.moveToNext()) {
-                bookList.add(new Book(Books.getInt(0),
-                        Books.getString(1),
-                        Books.getString(2),
-                        Books.getString(3),
-                        Books.getString(4),
-                        Books.getInt(5),
-                        Books.getInt(6),
-                        Books.getInt(7)));
-            }
+            bookAdapter = new BookAdapter(this, bookList);
+
+            recyclerView = findViewById(R.id.SearchRecyclerView);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(bookAdapter);
+
+            searchView = findViewById(R.id.search_bar);
+            searchView.setOnQueryTextListener(this);
         }
 
-        bookAdapter = new BookAdapter(this, bookList);
 
-        recyclerView = findViewById(R.id.SearchRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(bookAdapter);
-
-        searchView = findViewById(R.id.search_bar);
-        searchView.setOnQueryTextListener(this);
     }
 
     @Override

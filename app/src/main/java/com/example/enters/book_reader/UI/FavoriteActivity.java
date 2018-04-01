@@ -46,7 +46,8 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
         favoriteBooks = bookDB.getAllFavoriteBooks();
 
         if (favoriteBooks.size() == 0) {
-            Toast.makeText(FavoriteActivity.this, "You don't have favorite books", Toast.LENGTH_LONG);
+            Toast msg1 = Toast.makeText(this, "You don't have favorite books", Toast.LENGTH_LONG);
+            msg1.show();
         } else {
             bookAdapter = new BookAdapter(this, favoriteBooks);
 
@@ -62,30 +63,18 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
 
     }
 
-//    @Override
-//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        System.out.println("--------------onItemClick----------------");
-//        System.out.println("------------------------------");
-//        Intent intent = new Intent(FavoriteActivity.this, ReaderActivity.class);
-//        intent.putExtra("bookId", favoriteBooks.get(position).getId());
-//        intent.putExtra("bookPath", favoriteBooks.get(position).getFilePath());
-//        intent.putExtra("currentPage", favoriteBooks.get(position).getCurrentPage());
-//        this.startActivityForResult(intent, 1);
-//    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         bookAdapter.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 int bookId = data.getExtras().getInt("bookId");
-                System.out.println("------------------------------");
+
                 for(Book b : favoriteBooks){
                     if(b.getId() == bookId) {
                         int _index = favoriteBooks.indexOf(b);
                         favoriteBooks.get(_index).setCurrentPage(data.getExtras().getInt("currentPage"));
                         Log.d(TAG, "Setting current page to book");
-                        System.out.println(favoriteBooks.get(_index).getCurrentPage());
                         bookAdapter.notifyDataSetChanged();
                     }
                 }

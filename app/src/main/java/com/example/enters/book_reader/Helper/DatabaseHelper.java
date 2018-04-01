@@ -33,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static int BOOK_COLUMN_TYPE = 5;
     private static int BOOK_COLUMN_PAGECOUNT = 6;
     private static int BOOK_COLUMN_CURRENTPAGE = 7;
+    private static int BOOK_COLUMN_LANGUAGE = 8;
     private static String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( " +
             "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
             "`title` TEXT NOT NULL, " +
@@ -41,7 +42,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "`filePath` TEXT NOT NULL, " +
             "`type` INTEGER, " +
             "`pageCount` INTEGER, " +
-            "`currentPage` INTEGER " +
+            "`currentPage` INTEGER," +
+            "`language` TEXT NOT NULL " +
             ");";
 
     private SQLiteDatabase bookDatabase;
@@ -136,8 +138,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public boolean insertBook (int _id, String _title, String _author, String _imgPath,
-                               String _filePath, int _type, int _PageCount, int _currentPage) {
+    public boolean insertBook (int _id, String _title, String _author, String _imgPath, String _filePath,
+                               int _type, int _PageCount, int _currentPage, String _language) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("id", _id);
         contentValues.put("title", _title);
@@ -147,6 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("type", _type);
         contentValues.put("pageCount", _PageCount);
         contentValues.put("currentPage", _currentPage);
+        contentValues.put("language", _language);
         bookDatabase.insert(TABLE_NAME, null, contentValues);
         return true;
     }
@@ -157,12 +160,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             Log.d(TAG, "Adding data to book table");
             clearTable();
-            insertBook(1, "Sample data", "Authorrr",
-                    "broke_img.jpg", "aassdd.pdf", 1, 20, 0);
-            insertBook(2, "Book text 3", "Authorrsdg sdg s",
-                    "broke_img.jpg", "aassdd.pdf", 1, 54, 10);
-            insertBook(3, "Book tesdg s", "Authsdg  gsdg sdg s",
-                    "broke_img.jpg", "aassdd.pdf", 0, 61, 49);
+            insertBook(1, "Sample data", "Authorrr", "pdf/broke_img.jpg",
+                    "cover/aassdd.pdf", 1, 20, 0, "English");
+            insertBook(2, "Book text 3", "Authorrsdg sdg s","pdf/broke_img.jpg",
+                    "cover/aassdd.pdf", 1, 54, 10, "English");
+            insertBook(3, "Book tesdg s", "Authsdg  gsdg sdg s","pdf/broke_img.jpg",
+                    "cover/aassdd.pdf", 0, 61, 49, "English");
         }
     }
 
@@ -180,7 +183,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     data.getString(BOOK_COLUMN_FILEPATH),
                     data.getInt(BOOK_COLUMN_TYPE),
                     data.getInt(BOOK_COLUMN_PAGECOUNT),
-                    data.getInt(BOOK_COLUMN_CURRENTPAGE)
+                    data.getInt(BOOK_COLUMN_CURRENTPAGE),
+                    data.getString(BOOK_COLUMN_LANGUAGE)
             ));
         }
         close();
@@ -188,10 +192,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return bookList;
     }
 
-    public Cursor getAllBooks() {
-        Cursor data = QueryData("SELECT * FROM " + TABLE_NAME );
+    public ArrayList<Book> getAllBooks() {
+        Cursor data = QueryData("SELECT * FROM " + TABLE_NAME);
         Log.d(TAG, "Get all books");
-        return data;
+
+        ArrayList<Book> bookList = new ArrayList<>();
+
+        while (data.moveToNext()) {
+            bookList.add(new Book(data.getInt(BOOK_COLUMN_ID),
+                    data.getString(BOOK_COLUMN_TITLE),
+                    data.getString(BOOK_COLUMN_AUTHOR),
+                    data.getString(BOOK_COLUMN_IMGPATH),
+                    data.getString(BOOK_COLUMN_FILEPATH),
+                    data.getInt(BOOK_COLUMN_TYPE),
+                    data.getInt(BOOK_COLUMN_PAGECOUNT),
+                    data.getInt(BOOK_COLUMN_CURRENTPAGE),
+                    data.getString(BOOK_COLUMN_LANGUAGE)
+            ));
+        }
+        close();
+
+        return bookList;
     }
 
     public void changeBookType(int id, int type) {

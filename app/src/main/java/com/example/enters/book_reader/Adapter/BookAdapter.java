@@ -68,6 +68,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         holder.txtBookAuthor.setText(book.getAuthor());
         holder.txtBookPages.setText(book.getCurrentPage() + " / " + book.getPageCount() + "   " + (int)percentage + "%");
         holder.imgBookCover.setImageBitmap(ImageHelper.getBitmapFromAsset(bookContext, book.getImgPath()));
+        holder.textViewLang.setText(book.getLanguage());
 
         if (book.getType() == 1) {
             holder.favIcon.setColorFilter(bookContext.getResources().getColor(R.color.colorActive), PorterDuff.Mode.SRC_ATOP);
@@ -85,6 +86,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         public ImageView imgBookCover;
         public ImageView favIcon;
         public Book currentItem;
+        public TextView textViewLang;
 
         public BookViewHolder(final View bookItemView) {
             super(bookItemView);
@@ -93,6 +95,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             txtBookPages = bookItemView.findViewById(R.id.textViewPages);
             imgBookCover = bookItemView.findViewById(R.id.imageView);
             favIcon = bookItemView.findViewById(R.id.FavIcon);
+            textViewLang = bookItemView.findViewById(R.id.textViewLang);
 
 
             bookItemView.setClickable(true);
@@ -123,6 +126,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                                     break;
                                 case 1:
                                     deleteBookEvent(currentItem);
+                                    Toast msg1 = Toast.makeText(bookContext,
+                                            "You have removed " + currentItem.getTitle() + ".", Toast.LENGTH_LONG);
+                                    msg1.show();
                                     break;
                             }
                         }
@@ -139,9 +145,15 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                     if (currentItem.getType() == 0) {
                         Log.d(TAG, "Changing book type to 1");
                         addFavoriteBook(currentItem);
+                        Toast msg1 = Toast.makeText(bookContext,
+                                "You have added " + currentItem.getTitle() + " to Favorites.", Toast.LENGTH_LONG);
+                        msg1.show();
                     } else {
                         Log.d(TAG, "Changing book type to 0");
                         removeFavoriteBook(currentItem);
+                        Toast msg2 = Toast.makeText(bookContext,
+                                "You have removed " + currentItem.getTitle() + " from Favorites.", Toast.LENGTH_LONG);
+                        msg2.show();
                     }
                 }
             });
