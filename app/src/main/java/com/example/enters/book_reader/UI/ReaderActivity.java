@@ -23,7 +23,6 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
         OnPageErrorListener {
 
     private static final String TAG = "ReaderActivity";
-    public static final String SAMPLE_FILE = "cover/aassdd.pdf";
 
     PDFView pdfView;
     int bookId;
@@ -58,7 +57,7 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
     private void displayFromAsset(String assetFileName) {
         pdfFileName = assetFileName;
 
-        pdfView.fromAsset(SAMPLE_FILE)
+        pdfView.fromAsset(pdfFileName)
                 .defaultPage(pageNumber)
                 .onLoad(this)
                 .onPageChange(this)
@@ -76,7 +75,7 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
     @Override
     public void onPageChanged(int page, int pageCount) {
         pageNumber = page;
-        setTitle(String.format("%s %s / %s", pdfFileName, page + 1, pageCount));
+        setTitle(String.format("%s %s / %s", pdfFileName.substring(4), page + 1, pageCount));
         bookDB.changeBookPage(bookId, page + 1);
     }
 

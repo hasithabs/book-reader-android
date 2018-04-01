@@ -160,12 +160,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             Log.d(TAG, "Adding data to book table");
             clearTable();
-            insertBook(1, "Sample data", "Authorrr", "pdf/broke_img.jpg",
-                    "cover/aassdd.pdf", 1, 20, 0, "English");
-            insertBook(2, "Book text 3", "Authorrsdg sdg s","pdf/broke_img.jpg",
-                    "cover/aassdd.pdf", 1, 54, 10, "English");
-            insertBook(3, "Book tesdg s", "Authsdg  gsdg sdg s","pdf/broke_img.jpg",
-                    "cover/aassdd.pdf", 0, 61, 49, "English");
+            insertBook(1, "Sample data", "Authorrr", "cover/broke_img.jpg",
+                    "pdf/aassdd.pdf", 1, 20, 0, "English");
+            insertBook(2, "Algorithms", "Jeff Edmonds", "cover/broke_img.jpg",
+                    "pdf/Algorithms.pdf", 1, 464, 0, "English");
+            insertBook(3, "Certified Ethical Hacker", "Sean-Philip Oriyano", "cover/broke_img.jpg",
+                    "pdf/CertifiedEthicalHacker.pdf", 0, 507, 20, "English");
+            insertBook(4, "Game Engine Architecture", "Jason Gregory", "cover/broke_img.jpg",
+                    "pdf/GameArch.pdf", 0, 853, 0, "English");
+            insertBook(5, "How Successful People Think", "John C. Maxwell", "cover/broke_img.jpg",
+                    "pdf/HowSuccessful.pdf", 0, 80, 0, "English");
+            insertBook(6, "How To Win Every Argument", "Madsen Pirie", "cover/broke_img.jpg",
+                    "pdf/WinEveryArgument.pdf", 0, 196, 0, "English");
         }
     }
 

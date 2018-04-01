@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.example.enters.book_reader.book.Book;
 import java.util.ArrayList;
 
 public class SearchBookActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
+
+    private static final String TAG = "SearchBookActivity";
 
     DatabaseHelper bookDB;
     RecyclerView recyclerView;
@@ -51,8 +54,6 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
             searchView = findViewById(R.id.search_bar);
             searchView.setOnQueryTextListener(this);
         }
-
-
     }
 
     @Override
@@ -75,5 +76,24 @@ public class SearchBookActivity extends AppCompatActivity implements SearchView.
 
     @Override
     public void onClick(View view) {
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        bookAdapter.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                int bookId = data.getExtras().getInt("bookId");
+
+                for(Book b : bookList){
+                    if(b.getId() == bookId) {
+                        int _index = bookList.indexOf(b);
+                        bookList.get(_index).setCurrentPage(data.getExtras().getInt("currentPage"));
+                        Log.d(TAG, "Setting current page to book");
+                        bookAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
     }
 }
