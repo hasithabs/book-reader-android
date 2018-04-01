@@ -62,9 +62,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     @Override
     public void onBindViewHolder(BookViewHolder holder, int position) {
         Book book = bookList.get(position);
+        double percentage = ((double)book.getCurrentPage() / book.getPageCount()) * 100;
+
         holder.txtBookTitle.setText(book.getTitle());
         holder.txtBookAuthor.setText(book.getAuthor());
-        holder.txtBookPages.setText(book.getCurrentPage() + " / " + book.getPageCount());
+        holder.txtBookPages.setText(book.getCurrentPage() + " / " + book.getPageCount() + "   " + (int)percentage + "%");
         holder.imgBookCover.setImageBitmap(ImageHelper.getBitmapFromAsset(bookContext, book.getImgPath()));
 
         if (book.getType() == 1) {
