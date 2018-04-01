@@ -64,7 +64,7 @@ public class ReaderActivity extends AppCompatActivity implements OnPageChangeLis
                 .enableAnnotationRendering(true)
                 .onLoad(this)
                 .scrollHandle(new DefaultScrollHandle(this))
-                .spacing(10) // in dp
+                .spacing(10)
                 .onPageError(this)
                 .pageFitPolicy(FitPolicy.BOTH)
                 .load();

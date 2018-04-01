@@ -160,27 +160,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             Log.d(TAG, "Adding data to book table");
             clearTable();
-            insertBook(1, "Sample data", "Authorrr", "cover/broke_img.jpg",
-                    "pdf/aassdd.pdf", 1, 20, 0, "English");
-            insertBook(2, "Algorithms", "Jeff Edmonds", "cover/broke_img.jpg",
+            insertBook(2, "Algorithms", "Jeff Edmonds", "cover/Algorithms.jpg",
                     "pdf/Algorithms.pdf", 1, 464, 0, "English");
-            insertBook(3, "Certified Ethical Hacker", "Sean-Philip Oriyano", "cover/broke_img.jpg",
+            insertBook(3, "Certified Ethical Hacker", "Sean-Philip Oriyano", "cover/CertifiedEthicalHacker.jpg",
                     "pdf/CertifiedEthicalHacker.pdf", 0, 507, 20, "English");
-            insertBook(4, "Game Engine Architecture", "Jason Gregory", "cover/broke_img.jpg",
+            insertBook(4, "Game Engine Architecture", "Jason Gregory", "cover/GameArch.jpg",
                     "pdf/GameArch.pdf", 0, 853, 0, "English");
-            insertBook(5, "How Successful People Think", "John C. Maxwell", "cover/broke_img.jpg",
+            insertBook(5, "How Successful People Think", "John C. Maxwell", "cover/HowSuccessful.jpg",
                     "pdf/HowSuccessful.pdf", 0, 80, 0, "English");
-            insertBook(6, "How To Win Every Argument", "Madsen Pirie", "cover/broke_img.jpg",
+            insertBook(6, "How To Win Every Argument", "Madsen Pirie", "cover/WinEveryArgument.jpg",
                     "pdf/WinEveryArgument.pdf", 0, 196, 0, "English");
-            insertBook(7, "Inorganic Chemistry", "James E. House", "cover/broke_img.jpg",
+            insertBook(7, "Inorganic Chemistry", "James E. House", "cover/InorganicChemistry.jpg",
                     "pdf/InorganicChemistry.pdf", 0, 865, 0, "English");
-            insertBook(8, "Power Up Your Mind", "Bill Lucas", "cover/broke_img.jpg",
+            insertBook(8, "Power Up Your Mind", "Bill Lucas", "cover/PowerUpYourMind.jpg",
                     "pdf/PowerUpYourMind.pdf", 0, 273, 0, "English");
-            insertBook(9, "Artificial Intelligence", "Russell Peter", "cover/broke_img.jpg",
+            insertBook(9, "Artificial Intelligence", "Russell Peter", "cover/PrenticeHall.jpg",
                     "pdf/PrenticeHall.pdf", 0, 1152, 0, "English");
-            insertBook(10, "The 7 Habits of Effective People", "Stephen R. Covey", "cover/broke_img.jpg",
+            insertBook(10, "The 7 Habits of Effective People", "Stephen R. Covey", "cover/TheSevenHabits.jpg",
                     "pdf/TheSevenHabits.pdf", 0, 219, 0, "English");
-            insertBook(11, "Wings of Fire", "A P J Abdul Kalam", "cover/broke_img.jpg",
+            insertBook(11, "Wings of Fire", "A P J Abdul Kalam", "cover/WingsOfFire.jpg",
                     "pdf/WingsOfFire.pdf", 0, 219, 0, "English");
         }
     }
