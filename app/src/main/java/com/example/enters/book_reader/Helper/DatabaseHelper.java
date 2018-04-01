@@ -172,6 +172,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "pdf/HowSuccessful.pdf", 0, 80, 0, "English");
             insertBook(6, "How To Win Every Argument", "Madsen Pirie", "cover/broke_img.jpg",
                     "pdf/WinEveryArgument.pdf", 0, 196, 0, "English");
+            insertBook(7, "Inorganic Chemistry", "James E. House", "cover/broke_img.jpg",
+                    "pdf/InorganicChemistry.pdf", 0, 865, 0, "English");
+            insertBook(8, "Power Up Your Mind", "Bill Lucas", "cover/broke_img.jpg",
+                    "pdf/PowerUpYourMind.pdf", 0, 273, 0, "English");
+            insertBook(9, "Artificial Intelligence", "Russell Peter", "cover/broke_img.jpg",
+                    "pdf/PrenticeHall.pdf", 0, 1152, 0, "English");
+            insertBook(10, "The 7 Habits of Effective People", "Stephen R. Covey", "cover/broke_img.jpg",
+                    "pdf/TheSevenHabits.pdf", 0, 219, 0, "English");
+            insertBook(11, "Wings of Fire", "A P J Abdul Kalam", "cover/broke_img.jpg",
+                    "pdf/WingsOfFire.pdf", 0, 219, 0, "English");
         }
     }
 
